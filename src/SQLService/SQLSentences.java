@@ -57,10 +57,16 @@ public class SQLSentences<T> {
      * @param valuesToInsert
      * @return 
      */
-    private String BuildStringUpdate(String[] columns, Object[] valuesToInsert){
-        String separator = " and ";
+    private String BuildStringUpdate(String[] columns){
         StringBuilder sb = new StringBuilder();
-        
+        for(int i = 0; i < columns.length; i++){
+            if(i < columns.length-1){
+                sb.append(columns[i]).append(" = ").append("? and ");
+            }else{
+                sb.append(columns[i]).append(" = ").append("? ");
+            }
+            
+        }
         return sb.toString();
     }
     
@@ -70,10 +76,12 @@ public class SQLSentences<T> {
      * @param conditionalValues
      * @return 
      */
-    private String BuildStringUpdateConditions(String[] conditionalColumns, Object[] conditionalValues){
+    private String BuildStringUpdateConditions(String[] conditionalColumns){
         String separator = " and ";
         StringBuilder sb = new StringBuilder();
-        
+        for(int i = 0; i < conditionalColumns.length; i++){
+            
+        }
         return sb.toString();
     }
     
@@ -229,14 +237,16 @@ public class SQLSentences<T> {
             String[] columnsCondition,
             Object[] conditionalValues,
             Connection cn) throws SQLException{
-        String query = "Update " + table + " set " + BuildStringUpdate(columsToUpdate, objectsToInsertInColumnsToUpdate) +
-                        " Where " + BuildStringUpdateConditions(columnsCondition, conditionalValues);
-        this.cn.close();
+        String query = "Update " + table + " set " + BuildStringUpdate(columsToUpdate) +
+                        " Where " + BuildStringUpdate(columnsCondition);
+        System.out.println(query);
+        //this.cn.close();
         return true;
     }
 
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws SQLException {
+        SQLSentences<String> A = new SQLSentences<>();
+        A.DynamicUpdateMethod("table1", new String[]{"col_1", "col_2", "col_3", "col_4"}, new Object[]{1,"Hola", true, 1.0}, new String[]{"col_1", "col_2", "col_3", "col_4"}, new Object[]{1,"Hola", true, 1.0}, null);
     }
 
 }
