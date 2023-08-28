@@ -40,7 +40,7 @@ public class SQLSentences<T> {
      * @param valueToInsert
      * @param separator
      * @return
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     private String BuildString(int totalData, String valueToInsert, String separator) {
@@ -60,7 +60,7 @@ public class SQLSentences<T> {
      * @param columns
      * @param valuesToInsert
      * @return
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     private String BuildStringUpdateOrDelete(String[] columns, String operator, String andOrSentence) {
@@ -75,14 +75,14 @@ public class SQLSentences<T> {
         }
         return sb.toString();
     }
-    
+
     /**
-     * 
+     *
      * @param columns
      * @param operator
      * @param andOrSentence
-     * @return 
-     * 
+     * @return
+     *
      * @since Dynamic SQL 1.0
      */
     private String BuildStringUpdateOrDelete(String[] columns, String operator, String[] andOrSentence) {
@@ -105,37 +105,32 @@ public class SQLSentences<T> {
      * @param pst
      * @param objects array of objects
      * @throws SQLException
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     private void Differentiate(PreparedStatement pst, Object[] objects) throws SQLException {
         int i = 1;
         for (Object o : objects) {
-            switch (o.getClass().getName()) {
-                case "Z":
-                    pst.setBoolean(i, (boolean) o);
-                    break;
-                case "B":
-                    pst.setByte(i, (byte) o);
-                    break;
-                case "D":
-                    pst.setDouble(i, (double) o);
-                    break;
-                case "F":
-                    pst.setFloat(i, (float) o);
-                    break;
-                case "I":
-                    pst.setInt(i, (int) o);
-                    break;
-                case "S":
-                    pst.setShort(i, (short) o);
-                    break;
-                default:
-                    pst.setString(i, (String) o);
-                    break;
-            }
-            i++;
+        if (o instanceof Boolean) {
+            pst.setBoolean(i, (Boolean) o);
+        } else if (o instanceof Byte) {
+            pst.setByte(i, (Byte) o);
+        } else if (o instanceof Double) {
+            pst.setDouble(i, (Double) o);
+        } else if (o instanceof Float) {
+            pst.setFloat(i, (Float) o);
+        } else if (o instanceof Integer) {
+            pst.setInt(i, (Integer) o);
+        } else if (o instanceof Short) {
+            pst.setShort(i, (Short) o);
+        } else if (o instanceof String) {
+            pst.setString(i, (String) o);
+        } else {
+            // Puede que quieras manejar otros tipos o lanzar una excepción si el tipo no es soportado
+            throw new IllegalArgumentException("Tipo no soportado: " + o.getClass().getName());
         }
+        i++;
+    }
     }
 
     private void Differentiate(PreparedStatement pst, Object[] objectsUpdate, Object[] objectsConditionals) throws SQLException {
@@ -201,32 +196,32 @@ public class SQLSentences<T> {
      * <strong>Example:</strong></p><br>
      * <strong>Database Information:</strong><br>
      * <table  border="1">
-     *  <tr>
-     *      <th style="text-align:center;">ID</th>
-     *      <th style="text-align:center;">Name</th>
-     *      <th style="text-align:center;">Country</th>
-     *      <th style="text-align:center;">Phone Number</th>
-     *  </tr>
-     *  <tr>
-     *      <td style="text-align:center;">1</td>
-     *      <td style="text-align:center;">Liliana Gonzalez</td>
-     *      <td style="text-align:center;">México</td>
-     *      <td style="text-align:center;">+52 844xxxxxxx</td>
-     *  </tr>
-     *  <tr>
-     *      <td style="text-align:center;">2</td>
-     *      <td style="text-align:center;">Nahomi Tovar</td>
-     *      <td style="text-align:center;">México</td>
-     *      <td style="text-align:center;">+52 844xxxxxxx</td>
-     *  </tr>
+     * <tr>
+     * <th style="text-align:center;">ID</th>
+     * <th style="text-align:center;">Name</th>
+     * <th style="text-align:center;">Country</th>
+     * <th style="text-align:center;">Phone Number</th>
+     * </tr>
+     * <tr>
+     * <td style="text-align:center;">1</td>
+     * <td style="text-align:center;">Liliana Gonzalez</td>
+     * <td style="text-align:center;">México</td>
+     * <td style="text-align:center;">+52 844xxxxxxx</td>
+     * </tr>
+     * <tr>
+     * <td style="text-align:center;">2</td>
+     * <td style="text-align:center;">Nahomi Tovar</td>
+     * <td style="text-align:center;">México</td>
+     * <td style="text-align:center;">+52 844xxxxxxx</td>
+     * </tr>
      * </table>
      * <p>
      * Your class T it must have the following attributes:</p>
      * <ul>
-     *  <li>ID</li>
-     *  <li>Name</li>
-     *  <li>Country</li>
-     *  <li>Phone Number</li>
+     * <li>ID</li>
+     * <li>Name</li>
+     * <li>Country</li>
+     * <li>Phone Number</li>
      * </ul>
      * <p>
      * Your class must include all the get and set methods of all the
@@ -243,7 +238,7 @@ public class SQLSentences<T> {
      * Illegal Access error
      * @throws NoSuchFieldException throw this exception if happens any No Such
      * Field error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     public List<T> DynamicGetListMethod(String query, Connection connection) throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
@@ -285,11 +280,11 @@ public class SQLSentences<T> {
      * <p>
      * Your table contains the next columns:</p>
      * <ul>
-     *  <li>ID (Not Null)</li>
-     *  <li>Name (Not Null)</li>
-     *  <li>Address (Not Null)</li>
-     *  <li>Phone Number (Nullable)</li>
-     *  <li>Email (Nullable)</li>
+     * <li>ID (Not Null)</li>
+     * <li>Name (Not Null)</li>
+     * <li>Address (Not Null)</li>
+     * <li>Phone Number (Nullable)</li>
+     * <li>Email (Nullable)</li>
      * </ul>
      * <p>
      * If you only wants insert ID, Name and Address, you have to declare the
@@ -298,15 +293,17 @@ public class SQLSentences<T> {
      * class included into a this library or create your own connetion.
      * @return if don't throws any Exception, has return true.
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     public boolean DynamicInsertMethod(String table, String optionalColumns, Object[] objects, Connection cn) throws SQLException {
         this.cn = cn;
         optionalColumns = (optionalColumns.length() > 0 && optionalColumns.contains(",")) ? optionalColumns : "";
-        PreparedStatement pst = this.cn.prepareStatement("INSERT INTO " + table + "(" + optionalColumns + ")" + " VALUES (" + BuildString(objects.length, "?", ","));
+        String query = "INSERT INTO " + table + "(" + optionalColumns + ")" + " VALUES (" + BuildString(objects.length, "?", ",") + ")";
+        System.out.println(query);
+        PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objects);
-        pst.executeQuery();
+        pst.executeUpdate();
         this.cn.close();
         return true;
     }
@@ -315,15 +312,18 @@ public class SQLSentences<T> {
      *
      * @param table Name of table of database
      * @param columsToUpdate All columns that you want Update
-     * @param objectsToInsertInColumnsToUpdate All values to be set to previously declared columns
-     * @param columnsCondition These are the columns which will serve as a condition for data updating
-     * @param conditionalValues These are the values that will be used as a condition for updating the
-     * columns, these must be ordered as the columns were declared
+     * @param objectsToInsertInColumnsToUpdate All values to be set to
+     * previously declared columns
+     * @param columnsCondition These are the columns which will serve as a
+     * condition for data updating
+     * @param conditionalValues These are the values that will be used as a
+     * condition for updating the columns, these must be ordered as the columns
+     * were declared
      * @param cn You've the possibility to create a new instance of Connection
      * class included into a this library or create your own connetion.
-     * @return Count of all rows updated 
+     * @return Count of all rows updated
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     public int DynamicUpdateMethod(String table,
@@ -341,39 +341,43 @@ public class SQLSentences<T> {
         this.cn.close();
         return rowsAffected;
     }
-    
+
     /**
-     * 
+     *
      * @param table Name of table of database
      * @param columsToUpdate All columns that you want Update
-     * @param objectsToInsertInColumnsToUpdate All values to be set to previously declared columns
-     * @param columnsCondition These are the columns which will serve as a condition for data updating
-     * @param conditionalValues These are the values that will be used as a condition for updating the
-     * columns, these must be ordered as the columns were declared
-     * @param andOrSentence this param allows operations "and"-"or" to use in conditional SQL Sentences.
-     * this parameter needs to be declared with a length of -1 than the length of the columnsCondition parameter.<br>
+     * @param objectsToInsertInColumnsToUpdate All values to be set to
+     * previously declared columns
+     * @param columnsCondition These are the columns which will serve as a
+     * condition for data updating
+     * @param conditionalValues These are the values that will be used as a
+     * condition for updating the columns, these must be ordered as the columns
+     * were declared
+     * @param andOrSentence this param allows operations "and"-"or" to use in
+     * conditional SQL Sentences. this parameter needs to be declared with a
+     * length of -1 than the length of the columnsCondition parameter.<br>
      * <strong>Example:</strong><br>
      * columnsCondition = ["col_1","col_2","col_3","col_4","col_5"]<br>
      * andOrSentence = ["and", "or", "and", "and"]
-     *  <table  border="1">
-     *      <tr>
-     *          <th style="text-align:center;">Param</th>
-     *          <th style="text-align:center;">Length</th>
-     *      </tr>
-     *      <tr>
-     *          <td style="text-align:center;">columnsCondition</td>
-     *          <td style="text-align:center;">5</td>
-     *      </tr>
-     *      <tr>
-     *          <td style="text-align:center;">andOrSentence</td>
-     *          <td style="text-align:center;">4</td>
-     *      </tr>
-     *  </table>
+     * <table  border="1">
+     * <tr>
+     * <th style="text-align:center;">Param</th>
+     * <th style="text-align:center;">Length</th>
+     * </tr>
+     * <tr>
+     * <td style="text-align:center;">columnsCondition</td>
+     * <td style="text-align:center;">5</td>
+     * </tr>
+     * <tr>
+     * <td style="text-align:center;">andOrSentence</td>
+     * <td style="text-align:center;">4</td>
+     * </tr>
+     * </table>
      * @param cn You've the possibility to create a new instance of Connection
      * class included into a this library or create your own connetion.
-     * @return Count of all rows updated 
+     * @return Count of all rows updated
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     public int DynamicUpdateMethod(String table,
@@ -394,15 +398,17 @@ public class SQLSentences<T> {
     }
 
     /**
-     * 
+     *
      * @param table Name of table
-     * @param conditionalColumns These are the columns which will serve as a condition for data deleting
-     * @param conditionalValues These are the values that will be used as a condition for deleting data
+     * @param conditionalColumns These are the columns which will serve as a
+     * condition for data deleting
+     * @param conditionalValues These are the values that will be used as a
+     * condition for deleting data
      * @param cn You've the possibility to create a new instance of Connection
      * class included into a this library or create your own connetion.
-     * @return Count of all rows updated 
+     * @return Count of all rows updated
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     public boolean DynamicDeleteMethod(String table, String[] conditionalColumns, Object[] conditionalValues, Connection cn) throws SQLException {
@@ -415,18 +421,21 @@ public class SQLSentences<T> {
         this.cn.close();
         return true;
     }
-    
+
     /**
-     * 
+     *
      * @param table Name of table
-     * @param conditionalColumns These are the columns which will serve as a condition for data deleting
-     * @param conditionalValues These are the values that will be used as a condition for deleting data
-     * @param andOrSentence this param allows operations "and"-"or" to use in conditional SQL Sentences
+     * @param conditionalColumns These are the columns which will serve as a
+     * condition for data deleting
+     * @param conditionalValues These are the values that will be used as a
+     * condition for deleting data
+     * @param andOrSentence this param allows operations "and"-"or" to use in
+     * conditional SQL Sentences
      * @param cn You've the possibility to create a new instance of Connection
      * class included into a this library or create your own connetion.
-     * @return Count of all rows updated 
+     * @return Count of all rows updated
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
     public boolean DynamicDeleteMethod(String table, String[] conditionalColumns, Object[] conditionalValues, String[] andOrSentence, Connection cn) throws SQLException {
@@ -438,29 +447,34 @@ public class SQLSentences<T> {
         this.cn.close();
         return true;
     }
-    
+
     /**
      * Method to run custom SQL Sentence
+     *
      * @param queryWithOutWhereSentence Update sentence<br>
      * <h3>Example:</h3><br>
-     * <p>Update table set col_1 = ?, col_2 = ?, col_3 = ?</p><br>
+     * <p>
+     * Update table set col_1 = ?, col_2 = ?, col_3 = ?</p><br>
      * <h3>Aclaration!</h3><br>
-     * <p>the signs "?" are mandatory, these will be replaced by the 
-     * values that will be declared in the "queryValues" parameter</p>
+     * <p>
+     * the signs "?" are mandatory, these will be replaced by the values that
+     * will be declared in the "queryValues" parameter</p>
      * @param queryValues All values to be set to previously declared columns
      * @param whereSentence Where sentence<br>
      * <h3>Example:</h3><br>
-     * <p>Where col_1 = ?, col_2 = ?, col_3 = ?</p><br>
+     * <p>
+     * Where col_1 = ?, col_2 = ?, col_3 = ?</p><br>
      * <h3>Aclaration!</h3><br>
-     * <p>the signs "?" are mandatory, these will be replaced by the 
-     * values that will be declared in the "whereValues" parameter</p>
+     * <p>
+     * the signs "?" are mandatory, these will be replaced by the values that
+     * will be declared in the "whereValues" parameter</p>
      * @param whereValues All values to be set to previously declared columns
      * @return true if don't happens any SQL Error
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
-    public boolean CustomDynamicUpdateMethod(String queryWithOutWhereSentence, Object[] queryValues, String whereSentence, Object[] whereValues) throws SQLException{
+    public boolean CustomDynamicUpdateMethod(String queryWithOutWhereSentence, Object[] queryValues, String whereSentence, Object[] whereValues) throws SQLException {
         String query = queryWithOutWhereSentence + " " + whereSentence;
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, queryValues, whereValues);
@@ -470,24 +484,26 @@ public class SQLSentences<T> {
 
     /**
      * Method to run custom SQL Sentence
+     *
      * @param queryWithWhereSentence Update sentence<br>
      * <h3>Example:</h3><br>
-     * <p>Delete from table where col_1 = ?, col_2 = ?</p><br>
+     * <p>
+     * Delete from table where col_1 = ?, col_2 = ?</p><br>
      * <h3>Aclaration!</h3><br>
-     * <p>the signs "?" are mandatory, these will be replaced by the 
-     * values that will be declared in the "whereValues" parameter</p>
+     * <p>
+     * the signs "?" are mandatory, these will be replaced by the values that
+     * will be declared in the "whereValues" parameter</p>
      * @param whereValues All values to be set to previously declared columns
      * @return true if don't happens any SQL Error
      * @throws SQLException throw this exception if happens any SQL error
-     * 
+     *
      * @since Dynamic SQL 1.0
      */
-    public boolean CustomDynamicDeleteMethod(String queryWithWhereSentence, Object[] whereValues) throws SQLException{
+    public boolean CustomDynamicDeleteMethod(String queryWithWhereSentence, Object[] whereValues) throws SQLException {
         PreparedStatement pst = this.cn.prepareStatement(queryWithWhereSentence);
         Differentiate(pst, whereValues);
         pst.executeQuery();
         return true;
     }
-    
-    
+
 }
