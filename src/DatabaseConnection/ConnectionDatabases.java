@@ -27,16 +27,9 @@ public class ConnectionDatabases {
         }
     }
 
-    public Connection getMySQLConnection(String Database, String User, String Password) throws SQLException {
-        String myDB = Database;
-        String user = User;
-        String password = Password;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("No se pudo establecer conexión con la base de datos");
-        }
-        return DriverManager.getConnection(myDB, user, password);
+    public Connection getMySQLConnection(String Database, String User, String Password) throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection(Database, User, Password);
     }
-
+    
 }
