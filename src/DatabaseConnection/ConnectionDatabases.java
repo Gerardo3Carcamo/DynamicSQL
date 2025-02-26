@@ -4,9 +4,11 @@
  */
 package DatabaseConnection;
 
+import SQLService.SQLSentences;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.util.List;
 
 /**
  *
@@ -32,4 +34,13 @@ public class ConnectionDatabases {
         return DriverManager.getConnection(Database, User, Password);
     }
     
+    public Connection getMariaDbConnection(String Database, String User, String Password) throws SQLException, ClassNotFoundException { 
+        String url = "jdbc:mariadb://localhost:3306/"+Database;
+        Connection conexion = DriverManager.getConnection(url, User, Password);
+        return conexion;
+    }
+    public Connection getSqlServerConnection(String Database, String User, String Password) throws SQLException {
+         String url = "jdbc:sqlserver://localhost:1433;databaseName="+Database+";encrypt=true;trustServerCertificate=true";
+         return DriverManager.getConnection(url, User, Password);
+    }
 }

@@ -4,7 +4,6 @@
  */
 package SQLService;
 
-import DatabaseConnection.ConnectionDatabases;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -111,26 +110,26 @@ public class SQLSentences<T> {
     private void Differentiate(PreparedStatement pst, Object[] objects) throws SQLException {
         int i = 1;
         for (Object o : objects) {
-        if (o instanceof Boolean) {
-            pst.setBoolean(i, (Boolean) o);
-        } else if (o instanceof Byte) {
-            pst.setByte(i, (Byte) o);
-        } else if (o instanceof Double) {
-            pst.setDouble(i, (Double) o);
-        } else if (o instanceof Float) {
-            pst.setFloat(i, (Float) o);
-        } else if (o instanceof Integer) {
-            pst.setInt(i, (Integer) o);
-        } else if (o instanceof Short) {
-            pst.setShort(i, (Short) o);
-        } else if (o instanceof String) {
-            pst.setString(i, (String) o);
-        } else {
-            // Puede que quieras manejar otros tipos o lanzar una excepción si el tipo no es soportado
-            throw new IllegalArgumentException("Tipo no soportado: " + o.getClass().getName());
+            if (o instanceof Boolean) {
+                pst.setBoolean(i, (Boolean) o);
+            } else if (o instanceof Byte) {
+                pst.setByte(i, (Byte) o);
+            } else if (o instanceof Double) {
+                pst.setDouble(i, (Double) o);
+            } else if (o instanceof Float) {
+                pst.setFloat(i, (Float) o);
+            } else if (o instanceof Integer) {
+                pst.setInt(i, (Integer) o);
+            } else if (o instanceof Short) {
+                pst.setShort(i, (Short) o);
+            } else if (o instanceof String) {
+                pst.setString(i, (String) o);
+            } else {
+                // Puede que quieras manejar otros tipos o lanzar una excepción si el tipo no es soportado
+                throw new IllegalArgumentException("Tipo no soportado: " + o.getClass().getName());
+            }
+            i++;
         }
-        i++;
-    }
     }
 
     private void Differentiate(PreparedStatement pst, Object[] objectsUpdate, Object[] objectsConditionals) throws SQLException {
@@ -261,7 +260,6 @@ public class SQLSentences<T> {
         }
         resultSet.close();
         statement.close();
-        cn.close();
         return lista;
     }
 
@@ -298,13 +296,11 @@ public class SQLSentences<T> {
      */
     public boolean DynamicInsertMethod(String table, String optionalColumns, Object[] objects, Connection cn) throws SQLException {
         this.cn = cn;
-        optionalColumns = (optionalColumns.length() > 0 && optionalColumns.contains(",")) ? optionalColumns : "";
+        optionalColumns = (optionalColumns.length() > 0 || optionalColumns.contains(",")) ? optionalColumns : "";
         String query = "INSERT INTO " + table + "(" + optionalColumns + ")" + " VALUES (" + BuildString(objects.length, "?", ",") + ")";
-        System.out.println(query);
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objects);
         pst.executeUpdate();
-        this.cn.close();
         return true;
     }
 
@@ -338,7 +334,6 @@ public class SQLSentences<T> {
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objectsToInsertInColumnsToUpdate, conditionalValues);
         int rowsAffected = pst.executeUpdate();
-        this.cn.close();
         return rowsAffected;
     }
 
@@ -393,7 +388,6 @@ public class SQLSentences<T> {
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objectsToInsertInColumnsToUpdate, conditionalValues);
         int rowsAffected = pst.executeUpdate();
-        this.cn.close();
         return rowsAffected;
     }
 
@@ -414,11 +408,9 @@ public class SQLSentences<T> {
     public boolean DynamicDeleteMethod(String table, String[] conditionalColumns, Object[] conditionalValues, Connection cn) throws SQLException {
         this.cn = cn;
         String query = "Delete from " + table + " Where " + BuildStringUpdateOrDelete(conditionalColumns, "=", "");
-        System.out.println(query);
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, conditionalValues);
         pst.executeUpdate();
-        this.cn.close();
         return true;
     }
 
@@ -444,7 +436,6 @@ public class SQLSentences<T> {
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, conditionalValues);
         pst.executeQuery();
-        this.cn.close();
         return true;
     }
 
