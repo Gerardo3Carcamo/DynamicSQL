@@ -50,13 +50,13 @@ SQLSentences<MiModelo> sqlService = new SQLSentences<>(MiModelo.class);
 List<MiModelo> resultados = sqlService.DynamicGetListMethod("SELECT * FROM MiTabla", cn);
 ```
 #### Métodos disponibles
-`DynamicGetListMethod(String query, Connection connection)`
+- `DynamicGetListMethod(String query, Connection connection)`
 ```java
 String query = "SELECT * FROM empleados WHERE salario > ?";
 Object[] params = {3000};
 List<Empleado> empleados = sqlService.DynamicGetListMethod(query, cn, params);
 ```
-`DynamicInsertMethod(String table, String optionalColumns, Object[] objects, Connection cn)`
+- `DynamicInsertMethod(String table, String optionalColumns, Object[] objects, Connection cn)`
 ```java
 SQLSentences<Empleado> sqlService = new SQLSentences<>(Empleado.class);
 Object[] datos = {"Juan", "Pérez", 3500};
@@ -65,7 +65,7 @@ if (insertado) {
     System.out.println("Empleado insertado correctamente.");
 }
 ```
-`DynamicUpdateMethod(String table, String[] columns, Object[] objectsUpdate, Object[] objectsConditionals, Connection cn`
+- `DynamicUpdateMethod(String table, String[] columns, Object[] objectsUpdate, Object[] objectsConditionals, Connection cn`
 ```java
 String[] columnas = {"salario"};
 Object[] valores = {4000};
@@ -75,7 +75,7 @@ if (actualizado) {
     System.out.println("Empleado actualizado correctamente.");
 }
 ```
-`DynamicDeleteMethod(String table, String[] columns, Object[] objectsConditionals, Connection cn)`
+- `DynamicDeleteMethod(String table, String[] columns, Object[] objectsConditionals, Connection cn)`
 ```java
 String[] columnas = {"id"};
 Object[] condiciones = {5};
