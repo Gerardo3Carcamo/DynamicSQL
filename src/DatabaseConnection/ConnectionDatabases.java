@@ -32,4 +32,15 @@ public class ConnectionDatabases {
         return DriverManager.getConnection(Database, User, Password);
     }
     
+    public Connection getMariaDbConnection(String Database, String User, String Password) throws SQLException, ClassNotFoundException { 
+        String url = "jdbc:mariadb://localhost:3306/test_db";
+        Connection conexion = DriverManager.getConnection(url, User, Password);
+        System.out.println("¡Conexión exitosa a MariaDB!");
+        conexion.close();
+        return conexion;
+    }
+    
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        new ConnectionDatabases().getMariaDbConnection("", "root", "");
+    }
 }
