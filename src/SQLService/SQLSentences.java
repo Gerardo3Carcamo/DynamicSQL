@@ -4,7 +4,6 @@
  */
 package SQLService;
 
-import DatabaseConnection.ConnectionDatabases;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -111,26 +110,26 @@ public class SQLSentences<T> {
     private void Differentiate(PreparedStatement pst, Object[] objects) throws SQLException {
         int i = 1;
         for (Object o : objects) {
-        if (o instanceof Boolean) {
-            pst.setBoolean(i, (Boolean) o);
-        } else if (o instanceof Byte) {
-            pst.setByte(i, (Byte) o);
-        } else if (o instanceof Double) {
-            pst.setDouble(i, (Double) o);
-        } else if (o instanceof Float) {
-            pst.setFloat(i, (Float) o);
-        } else if (o instanceof Integer) {
-            pst.setInt(i, (Integer) o);
-        } else if (o instanceof Short) {
-            pst.setShort(i, (Short) o);
-        } else if (o instanceof String) {
-            pst.setString(i, (String) o);
-        } else {
-            // Puede que quieras manejar otros tipos o lanzar una excepción si el tipo no es soportado
-            throw new IllegalArgumentException("Tipo no soportado: " + o.getClass().getName());
+            if (o instanceof Boolean) {
+                pst.setBoolean(i, (Boolean) o);
+            } else if (o instanceof Byte) {
+                pst.setByte(i, (Byte) o);
+            } else if (o instanceof Double) {
+                pst.setDouble(i, (Double) o);
+            } else if (o instanceof Float) {
+                pst.setFloat(i, (Float) o);
+            } else if (o instanceof Integer) {
+                pst.setInt(i, (Integer) o);
+            } else if (o instanceof Short) {
+                pst.setShort(i, (Short) o);
+            } else if (o instanceof String) {
+                pst.setString(i, (String) o);
+            } else {
+                // Puede que quieras manejar otros tipos o lanzar una excepción si el tipo no es soportado
+                throw new IllegalArgumentException("Tipo no soportado: " + o.getClass().getName());
+            }
+            i++;
         }
-        i++;
-    }
     }
 
     private void Differentiate(PreparedStatement pst, Object[] objectsUpdate, Object[] objectsConditionals) throws SQLException {

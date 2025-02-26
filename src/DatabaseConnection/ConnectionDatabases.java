@@ -39,4 +39,8 @@ public class ConnectionDatabases {
         Connection conexion = DriverManager.getConnection(url, User, Password);
         return conexion;
     }
+    public Connection getSqlServerConnection(String Database, String User, String Password) throws SQLException {
+         String url = "jdbc:sqlserver://localhost:1433;databaseName="+Database+";encrypt=true;trustServerCertificate=true";
+         return DriverManager.getConnection(url, User, Password);
+    }
 }
