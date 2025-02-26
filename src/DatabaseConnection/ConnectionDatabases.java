@@ -4,9 +4,11 @@
  */
 package DatabaseConnection;
 
+import SQLService.SQLSentences;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.util.List;
 
 /**
  *
@@ -33,14 +35,8 @@ public class ConnectionDatabases {
     }
     
     public Connection getMariaDbConnection(String Database, String User, String Password) throws SQLException, ClassNotFoundException { 
-        String url = "jdbc:mariadb://localhost:3306/test_db";
+        String url = "jdbc:mariadb://localhost:3306/"+Database;
         Connection conexion = DriverManager.getConnection(url, User, Password);
-        System.out.println("¡Conexión exitosa a MariaDB!");
-        conexion.close();
         return conexion;
-    }
-    
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        new ConnectionDatabases().getMariaDbConnection("", "root", "");
     }
 }

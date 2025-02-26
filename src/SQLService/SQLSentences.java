@@ -261,7 +261,6 @@ public class SQLSentences<T> {
         }
         resultSet.close();
         statement.close();
-        cn.close();
         return lista;
     }
 
@@ -298,13 +297,11 @@ public class SQLSentences<T> {
      */
     public boolean DynamicInsertMethod(String table, String optionalColumns, Object[] objects, Connection cn) throws SQLException {
         this.cn = cn;
-        optionalColumns = (optionalColumns.length() > 0 && optionalColumns.contains(",")) ? optionalColumns : "";
+        optionalColumns = (optionalColumns.length() > 0 || optionalColumns.contains(",")) ? optionalColumns : "";
         String query = "INSERT INTO " + table + "(" + optionalColumns + ")" + " VALUES (" + BuildString(objects.length, "?", ",") + ")";
-        System.out.println(query);
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objects);
         pst.executeUpdate();
-        this.cn.close();
         return true;
     }
 
@@ -338,7 +335,6 @@ public class SQLSentences<T> {
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objectsToInsertInColumnsToUpdate, conditionalValues);
         int rowsAffected = pst.executeUpdate();
-        this.cn.close();
         return rowsAffected;
     }
 
@@ -393,7 +389,6 @@ public class SQLSentences<T> {
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, objectsToInsertInColumnsToUpdate, conditionalValues);
         int rowsAffected = pst.executeUpdate();
-        this.cn.close();
         return rowsAffected;
     }
 
@@ -414,11 +409,9 @@ public class SQLSentences<T> {
     public boolean DynamicDeleteMethod(String table, String[] conditionalColumns, Object[] conditionalValues, Connection cn) throws SQLException {
         this.cn = cn;
         String query = "Delete from " + table + " Where " + BuildStringUpdateOrDelete(conditionalColumns, "=", "");
-        System.out.println(query);
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, conditionalValues);
         pst.executeUpdate();
-        this.cn.close();
         return true;
     }
 
@@ -444,7 +437,6 @@ public class SQLSentences<T> {
         PreparedStatement pst = this.cn.prepareStatement(query);
         Differentiate(pst, conditionalValues);
         pst.executeQuery();
-        this.cn.close();
         return true;
     }
 
